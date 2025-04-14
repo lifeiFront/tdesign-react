@@ -5,6 +5,8 @@ import DialogComponent, { DialogProps } from './Dialog';
 
 import { getAttach } from '../_util/dom';
 import { DialogOptions, DialogMethod, DialogConfirmMethod, DialogAlertMethod, DialogInstance } from './type';
+import ConfigProvider from '../config-provider';
+import PluginContainer from '../common/PluginContainer';
 
 export interface DialogPluginType extends DialogMethod {
   alert: DialogAlertMethod;
@@ -18,7 +20,8 @@ const createDialog: DialogPluginType = (props: DialogOptions): DialogInstance =>
 
   const fragment = document.createDocumentFragment();
 
-  render(<DialogComponent {...(options as DialogProps)} visible={visible} ref={dialogRef} isPlugin />, fragment);
+  const dGlobalConfig = ConfigProvider.getGlobalConfig();
+  render(<PluginContainer globalConfig={dGlobalConfig}><DialogComponent {...(options as DialogProps)} visible={visible} ref={dialogRef} isPlugin /></PluginContainer>, fragment);
 
   const container = getAttach(options.attach);
   if (container) {
